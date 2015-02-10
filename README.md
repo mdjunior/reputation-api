@@ -144,3 +144,15 @@ Rota para alterar a reputação de um item. Exemplo:
 Resposta
 
 	{"reputation":15}
+
+
+######### DELETE /api/collection/item
+-----------------------------------
+
+Rota para remover a reputação de um item. Exemplo:
+
+	curl -X DELETE $HOST/api/ip/1.1.1.1
+
+Resposta
+
+	{"reputation":100}
