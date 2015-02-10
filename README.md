@@ -111,3 +111,27 @@ Resposta
 			"reputation": 99
 		}
 	]
+
+
+######### GET /api/events/collection/item
+-----------------------------
+
+Rota para obter todos os eventos relacionados a um item de uma coleção. Exemplo de consulta:
+
+	curl $HOST/api/events/ip/1.1.1.1
+
+Resposta
+
+	[
+		{
+			"category": "TRAFFIC.ABUSE",
+			"collection": "ip",
+			"id": "39",
+			"item": "1.1.1.1",
+			"log_id": "ip01234567890",
+			"msg": "anomaly detection FIN/ACK",
+			"timestamp": "123456789"
+		}
+	]
+
+
