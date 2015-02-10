@@ -67,3 +67,15 @@ Resposta
 
 	WORKING
 
+
+######### /api/collection/item
+------------------------------
+
+Rota para obter a reputação de um item. Exemplo de consulta:
+
+	curl $HOST/api/ip/8.8.8.8
+
+Resposta
+
+	{"reputation":100}
+
