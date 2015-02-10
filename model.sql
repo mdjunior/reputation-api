@@ -1,0 +1,44 @@
+-- Generated: 2015-02-10 00:11
+-- Model: reputation-api
+-- Version: 1.0
+-- Project: reputation-api
+-- Author: Manoel Domingues
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+
+CREATE SCHEMA IF NOT EXISTS `reputation` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
+
+CREATE TABLE IF NOT EXISTS `reputation`.`category` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `category` VARCHAR(45) NOT NULL,
+  `tax` DECIMAL(10,4) NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `categoria_index` (`category` ASC))
+ENGINE = InnoDB
+AUTO_INCREMENT = 5
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_general_ci;
+
+CREATE TABLE IF NOT EXISTS `reputation`.`events` (
+  `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `timestamp` INT(11) NULL DEFAULT NULL,
+  `collection` VARCHAR(10) NULL DEFAULT NULL,
+  `category` VARCHAR(45) NULL DEFAULT NULL,
+  `item` VARCHAR(250) NULL DEFAULT NULL,
+  `msg` TEXT NULL DEFAULT NULL,
+  `log_id` VARCHAR(128) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `log_id_unique` (`log_id` ASC),
+  INDEX `item_index` (`item` ASC),
+  INDEX `cat_index` (`category` ASC))
+ENGINE = InnoDB
+AUTO_INCREMENT = 7
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_general_ci;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
