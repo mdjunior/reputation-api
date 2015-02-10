@@ -90,3 +90,24 @@ Rota para enviar um evento relacionado a um item (a categoria já deve existir n
 Resposta
 
 	{"reputation":99}
+
+
+######### GET /api/collection
+-----------------------------
+
+Rota para obter todos os itens de uma coleção, com suas respectivas reputações. Exemplo de consulta:
+
+	curl $HOST/api/ip
+
+Resposta
+
+	[
+		{
+			"item": "1.1.1.1",
+			"reputation": 99
+		},
+		{
+			"item": "1.1.1.2",
+			"reputation": 99
+		}
+	]
