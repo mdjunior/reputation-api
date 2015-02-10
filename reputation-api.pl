@@ -224,6 +224,31 @@ get '/api/:collection' => [collection => @COLLECTIONS] => sub {
     );
 };
 
+put '/api/:collection/#item' => [collection => @COLLECTIONS] => sub {
+    my $c = shift;
+
+    my $item = j($c->req->body);
+
+    # Validating JSON
+    if (!defined $item->{reputation} || !defined $item->{info}) {
+        $c->render(text => 'error', status => 400);
+        return;
+    }
+
+    # Recording reputation
+    $c->redis->zadd($c->param('collection'),
+        $item->{reputation} => $c->param('item'));
+
+    # Inserting event
+    my $time = time;
+    $c->insert_event($time, $c->param('collection'),
+        $c->param('item'), 'REPUTATION.MODIFY', $item->{info}, $time,);
+
+    $c->render(json => {reputation => $item->{reputation}});
+    return;
+
+};
+
 get '/api/events/:collection/#item' => [collection => @COLLECTIONS] => sub {
     my $c = shift;
 
