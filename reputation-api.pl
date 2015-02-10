@@ -117,7 +117,7 @@ get '/api/:collection/#item' => [collection => @COLLECTIONS] => sub {
     );
 };
 
-post '/api/:collection' => sub {
+post '/api/:collection' => [collection => @COLLECTIONS] => sub {
     my $c = shift;
 
     my $item = j($c->req->body);
@@ -176,6 +176,7 @@ post '/api/:collection' => sub {
         },
     );
 };
+
 
 app->config(
     hypnotoad => {
