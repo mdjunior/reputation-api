@@ -30,7 +30,7 @@ Readonly my @COLLECTIONS   => split / /sm, $ENV{REPUTATION_API_COLLECTIONS};
 ## Helper for redis
 helper redis => sub {
     shift->stash->{redis}
-        ||= Mojo::Redis2->new( url => $ENV{REPUTATION_API_REDIS_URL} );
+        ||= Mojo::Redis2->new(url => $ENV{REPUTATION_API_REDIS_URL});
 };
 
 ###############################################################################
@@ -51,15 +51,46 @@ get '/status' => sub {
 #  is not necessary to check the mysql because the application does not start without it
 
     #  checking redis
-    my $res = $c->redis->set( foo => '42' );
+    my $res = $c->redis->set(foo => '42');
     $res = $c->redis->get('foo');
-    if ( $res ne '42' ) {
+    if ($res ne '42') {
         $status = 'FAIL';
     }
 
-    $c->render( text => $status );
+    $c->render(text => $status);
 };
 
+get '/api/:collection/#item' => [collection => @COLLECTIONS] => sub {
+    my $c = shift;
+
+    $c->delay(
+        sub {
+            my ($delay) = @_;
+            $c->redis->zscore($c->param('collection'),
+                $c->param('item'), $delay->begin);
+        },
+        sub {
+            my ($delay, $err, $msg) = @_;
+
+            # If already have reputation
+            if (defined $msg) {
+                $c->render(json => {reputation => $msg * 1});
+                return;
+            }
+
+            # If it has no reputation
+            else {
+                $c->redis->zadd(
+                    $c->param('collection'),
+                    $DEFAULT_VALUE => $c->param('item'),
+                    $delay->begin
+                );
+                $c->render(json => {reputation => $DEFAULT_VALUE * 1});
+                return;
+            }
+        },
+    );
+};
 
 app->config(
     hypnotoad => {
