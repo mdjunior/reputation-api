@@ -79,3 +79,14 @@ Resposta
 
 	{"reputation":100}
 
+
+######### POST /api/collection/item
+-----------------------------------
+
+Rota para enviar um evento relacionado a um item (a categoria já deve existir no banco de dados e possuir uma taxa). Exemplo:
+
+	curl -X POST -d'{"timestamp":"123456789","item":"1.1.1.1","category":"TRAFFIC.ABUSE","msg":"anomaly detection FIN/ACK","log_id":"0123456789"}' $HOST/api/ip/
+
+Resposta
+
+	{"reputation":99}
