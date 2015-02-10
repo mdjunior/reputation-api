@@ -42,6 +42,31 @@ my $dbh = DBI->connect(
 ) or exit;
 helper db => sub {$dbh};
 
+helper get_tax => sub {
+    my $self = shift;
+    my ($cat, $others) = @_;
+
+    my $sth = eval {
+        $self->db->prepare(
+            'SELECT tax FROM category WHERE category=? LIMIT 1');
+    };
+    $sth->execute($cat);
+    return $sth->fetchall_arrayref()->[0]->[0];
+};
+
+helper insert_event => sub {
+    my $self = shift;
+    my ($time, $collection, $item, $cat, $msg, $log_id) = @_;
+
+    my $sth = eval {
+        $self->db->prepare(
+            'INSERT INTO `events` (`timestamp`,`collection`,`item`,`category`,`msg`,`log_id`) VALUES (?,?,?,?,?,?);'
+        );
+    };
+    $sth->execute($time, $collection, $item, $cat, $msg,
+        $collection . $log_id);
+    return 1;
+};
 ###############################################################################
 
 get '/status' => sub {
@@ -88,6 +113,66 @@ get '/api/:collection/#item' => [collection => @COLLECTIONS] => sub {
                 $c->render(json => {reputation => $DEFAULT_VALUE * 1});
                 return;
             }
+        },
+    );
+};
+
+post '/api/:collection' => sub {
+    my $c = shift;
+
+    my $item = j($c->req->body);
+
+    # Validating JSON
+    if (   !defined $item->{timestamp}
+        || !defined $item->{item}
+        || !defined $item->{category}
+        || !defined $item->{msg}
+        || !defined $item->{log_id})
+    {
+        $c->render(text => 'error', status => 400);
+        return;
+    }
+
+    # Getting the tax by category
+    my $tax = $c->get_tax($item->{category});
+    if (!defined $tax) {
+        $c->render(text => 'error', status => 400);
+        return;
+    }
+
+    # Verifying if exists reputation, and setting it in case of failure
+    my $reputation;
+    $c->delay(
+        sub {
+            my ($delay) = @_;
+            $c->redis->zscore($c->param('collection'),
+                $item->{item}, $delay->begin);
+        },
+        sub {
+            my ($delay, $err, $msg) = @_;
+
+            # If it has reputation (multiply the tax by the current value)
+            if (defined $msg) {
+                $reputation = $msg * $tax;
+
+            # If it has not reputation (multiply the tax by the standard value)
+            }
+            else {
+                $c->app->log->info('opa...');
+                $reputation = $DEFAULT_VALUE * $tax;
+            }
+
+            # Recording reputation
+            $c->redis->zadd($c->param('collection'),
+                $reputation => $item->{item});
+
+            # Inserting event
+            $c->insert_event($item->{timestamp}, $c->param('collection'),
+                $item->{item}, $item->{category}, $item->{msg},
+                $item->{log_id},);
+
+            $c->render(json => {'reputation' => $reputation});
+            return;
         },
     );
 };
