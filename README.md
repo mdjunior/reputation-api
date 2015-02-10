@@ -19,6 +19,7 @@ Assim, para cada categoria de evento, teremos uma tax associada e essa tax pode 
 
 
 ######## Instalação
+===================
 
 O processo de instalação da API depende basicamente de uma conexão com a internet e da execussão de alguns comandos (que podem ser facilmente automatizados). Para sistemas operacionais com versões antigas de Perl (a API é escrita nessa linguagem) recomendamos o uso do Plenv, que é capaz de criar um ambiente virtual com o Perl na versão ideal.
 
@@ -30,6 +31,7 @@ Feito isso, basta entrar na pasta e executar ´./vendor/bin/carton install --cac
 
 
 ######## Configuração
+=====================
 
 Toda a configuração da aplicação é feita usando variáveis de ambiente, logo sempre que alguma ação relativa a iniciar ou parar a aplicação, as variáveis de ambiente deverão ser carregadas.
 
@@ -49,4 +51,19 @@ A seguir, acompanhe as variáveis de ambiente utilizadas, com exemplos de config
 	REPUTATION_API_CLIENTS=100
 	REPUTATION_API_LOCK_FILE=reputation-api.lock
 	REPUTATION_API_PID_FILE=reputation-api.pid
+
+######## Uso
+============
+
+
+######### /status
+-----------------
+
+Rota de verificação do funcionamento da API. Seu uso é recomendado para aplicações que farão um alto número de requisições em um curto espaço de tempo, assim verificando se a API está disponível. Exemplo de consulta:
+
+	curl $HOST/status
+
+Resposta
+
+	WORKING
 
