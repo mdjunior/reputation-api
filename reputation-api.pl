@@ -177,6 +177,36 @@ post '/api/:collection' => [collection => @COLLECTIONS] => sub {
     );
 };
 
+get '/api/:collection' => [collection => @COLLECTIONS] => sub {
+    my $c = shift;
+
+    $c->delay(
+        sub {
+            my ($delay) = @_;
+            $c->redis->zrangebyscore($c->param('collection'),
+                0, $DEFAULT_VALUE, 'WITHSCORES', $delay->begin);
+        },
+        sub {
+            my ($delay, $err, $msg) = @_;
+            my $hash = {@{$msg}};
+            my @json;
+
+            foreach my $key (keys $hash) {
+                my $reputation = $hash->{$key} * 1;
+                push @json, {'item' => $key, 'reputation' => $reputation};
+            }
+
+            if (defined $msg) {
+                $c->render(json => \@json);
+                return;
+            }
+            else {
+                $c->render(text => 'error', status => 400);
+                return;
+            }
+        },
+    );
+};
 
 app->config(
     hypnotoad => {
