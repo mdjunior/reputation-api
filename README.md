@@ -56,8 +56,8 @@ A seguir, acompanhe as variáveis de ambiente utilizadas, com exemplos de config
 ============
 
 
-######### /status
------------------
+######### GET /status
+---------------------
 
 Rota de verificação do funcionamento da API. Seu uso é recomendado para aplicações que farão um alto número de requisições em um curto espaço de tempo, assim verificando se a API está disponível. Exemplo de consulta:
 
@@ -68,8 +68,8 @@ Resposta
 	WORKING
 
 
-######### /api/collection/item
-------------------------------
+######### GET /api/collection/item
+----------------------------------
 
 Rota para obter a reputação de um item. Exemplo de consulta:
 
