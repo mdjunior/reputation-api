@@ -134,4 +134,13 @@ Resposta
 		}
 	]
 
+######### PUT /api/collection/item
+-----------------------------------
 
+Rota para alterar a reputação de um item. Exemplo:
+
+	curl -X PUT -d'{"reputation":"50","info":"alteracao emergencial"}' $HOST/api/ip/1.1.1.1
+
+Resposta
+
+	{"reputation":15}
