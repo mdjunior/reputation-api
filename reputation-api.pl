@@ -67,6 +67,22 @@ helper insert_event => sub {
         $collection . $log_id);
     return 1;
 };
+
+helper get_events => sub {
+    my $self = shift;
+    my ($cat, $item) = @_;
+
+    my $sth = eval {
+        $self->db->prepare(
+            'SELECT * FROM events WHERE collection=? AND item=? LIMIT 1000');
+    };
+    $sth->execute($cat, $item);
+
+    my $hash = $sth->fetchall_hashref('id');
+    my @array;
+    foreach my $id (keys %{$hash}) { push @array, $hash->{$id}; }
+    return [@array];
+};
 ###############################################################################
 
 get '/status' => sub {
@@ -206,6 +222,13 @@ get '/api/:collection' => [collection => @COLLECTIONS] => sub {
             }
         },
     );
+};
+
+get '/api/events/:collection/#item' => [collection => @COLLECTIONS] => sub {
+    my $c = shift;
+
+    $c->render(
+        json => $c->get_events($c->param('collection'), $c->param('item')));
 };
 
 app->config(
