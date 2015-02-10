@@ -249,6 +249,22 @@ put '/api/:collection/#item' => [collection => @COLLECTIONS] => sub {
 
 };
 
+del '/api/:collection/#item' => [collection => @COLLECTIONS] => sub {
+    my $c = shift;
+
+    # Delete reputation
+    $c->redis->zrem($c->param('collection'), $c->param('item'));
+
+    # Inserting event
+    my $time = time;
+    $c->insert_event($time, $c->param('collection'),
+        $c->param('item'), 'REPUTATION.DELETE', $time, $time,);
+
+    $c->render(json => {reputation => 100});
+    return;
+
+};
+
 get '/api/events/:collection/#item' => [collection => @COLLECTIONS] => sub {
     my $c = shift;
 
