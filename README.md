@@ -80,7 +80,7 @@ Resposta
 	{"reputation":100}
 
 
-######### POST /api/collection/item
+######### POST /api/collection
 -----------------------------------
 
 Rota para enviar um evento relacionado a um item (a categoria já deve existir no banco de dados e possuir uma taxa). Exemplo:
