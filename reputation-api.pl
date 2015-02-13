@@ -84,6 +84,18 @@ helper get_events => sub {
 };
 ###############################################################################
 
+under sub {
+    my $c = shift;
+    # Definindo headers gerais
+    $c->res->headers->header(
+        'Access-Control-Allow-Origin' => '*');
+    $c->res->headers->header(
+        'Access-Control-Max-Age' => '86400');
+    $c->res->headers->header(
+        'Access-Control-Allow-Headers' => 'Content-Type');
+    return 1;
+};
+
 get '/status' => sub {
     my $c      = shift;
     my $status = 'WORKING';
