@@ -271,6 +271,16 @@ get '/api/events/:collection/#item' => sub {
         json => $c->get_events($c->param('collection'), $c->param('item')));
 };
 
+options '*' => sub {
+    my $c = shift;
+
+    $c->res->headers->header(
+        'Access-Control-Allow-Methods' => 'GET, POST, PUT, DELETE');
+
+    $c->render(text => 'OPTIONS');
+    return;
+};
+
 app->config(
     hypnotoad => {
         listen    => ['http://*:8080'],
