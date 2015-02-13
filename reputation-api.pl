@@ -23,7 +23,6 @@ our $VERSION = 1.0;
 ###############################################################################
 Readonly my $DEFAULT_VALUE => 100;
 Readonly my $EXPIRATION    => 86_400;
-Readonly my @COLLECTIONS   => split / /sm, $ENV{REPUTATION_API_COLLECTIONS};
 ###############################################################################
 
 ###############################################################################
@@ -101,7 +100,7 @@ get '/status' => sub {
     $c->render(text => $status);
 };
 
-get '/api/:collection/#item' => [collection => @COLLECTIONS] => sub {
+get '/api/:collection/#item' => sub {
     my $c = shift;
 
     $c->delay(
@@ -133,7 +132,7 @@ get '/api/:collection/#item' => [collection => @COLLECTIONS] => sub {
     );
 };
 
-post '/api/:collection' => [collection => @COLLECTIONS] => sub {
+post '/api/:collection' => sub {
     my $c = shift;
 
     my $item = j($c->req->body);
@@ -193,7 +192,7 @@ post '/api/:collection' => [collection => @COLLECTIONS] => sub {
     );
 };
 
-get '/api/:collection' => [collection => @COLLECTIONS] => sub {
+get '/api/:collection' => sub {
     my $c = shift;
 
     $c->delay(
@@ -224,7 +223,7 @@ get '/api/:collection' => [collection => @COLLECTIONS] => sub {
     );
 };
 
-put '/api/:collection/#item' => [collection => @COLLECTIONS] => sub {
+put '/api/:collection/#item' => sub {
     my $c = shift;
 
     my $item = j($c->req->body);
@@ -249,7 +248,7 @@ put '/api/:collection/#item' => [collection => @COLLECTIONS] => sub {
 
 };
 
-del '/api/:collection/#item' => [collection => @COLLECTIONS] => sub {
+del '/api/:collection/#item' => sub {
     my $c = shift;
 
     # Delete reputation
@@ -265,7 +264,7 @@ del '/api/:collection/#item' => [collection => @COLLECTIONS] => sub {
 
 };
 
-get '/api/events/:collection/#item' => [collection => @COLLECTIONS] => sub {
+get '/api/events/:collection/#item' => sub {
     my $c = shift;
 
     $c->render(
