@@ -25,9 +25,9 @@ O processo de instalação da API depende basicamente de uma conexão com a inte
 
 Para sistemas mais modermos (com versões do Perl acima da 5.18.2), o Perl do sistema pode ser usado.
 
-O primeiro passo, é fazer o download da aplicação. Isso pode ser feito clonando o repositório ´git clone https://github.com/mdjunior/reputation-api.git´ ou fazendo o download do ZIP [aqui](https://github.com/mdjunior/reputation-api/archive/master.zip)
+O primeiro passo, é fazer o download da aplicação. Isso pode ser feito clonando o repositório `git clone https://github.com/mdjunior/reputation-api.git` ou fazendo o download do ZIP [aqui](https://github.com/mdjunior/reputation-api/archive/master.zip)
 
-Feito isso, basta entrar na pasta e executar ´./vendor/bin/carton install --cached --deployment´. Agora basta configurar a aplicação.
+Feito isso, basta entrar na pasta e executar `./vendor/bin/carton install --cached --deployment`. Agora basta configurar a aplicação.
 
 
 ######## Configuração
