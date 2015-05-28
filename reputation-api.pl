@@ -218,7 +218,7 @@ get '/api/:collection' => sub {
             my $hash = {@{$msg}};
             my @json;
 
-            foreach my $key (keys $hash) {
+            foreach my $key (keys %{$hash}) {
                 my $reputation = $hash->{$key} * 1;
                 push @json, {'item' => $key, 'reputation' => $reputation};
             }
