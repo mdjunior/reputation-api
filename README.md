@@ -18,6 +18,12 @@ A opção por criar uma API para fazer a gestão desses dados é especializar as
 Assim, para cada categoria de evento, teremos uma tax associada e essa tax pode aumentar a reputação de um objeto ou diminuir, tudo isso de acordo com a categoria do evento.
 
 
+######## Apresentações
+======================
+
+- [GTS-25 Video](https://www.youtube.com/watch?v=SCLZ6C07gCI)
+- [GTS-25 Slides](ftp://ftp.registro.br/pub/gts/gts25/08-ConstruindoArquiteruraDeReputacao.pdf)
+
 ######## Instalação
 ===================
 
